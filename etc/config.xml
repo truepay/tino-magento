@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <payment>
+            <tino_payment>
+                <model>TinoPaymentFacade</model>
+                <title>Tino</title>
+                <active>0</active>
+                <debug>1</debug>
+                <is_gateway>1</is_gateway>
+                <can_use_checkout>1</can_use_checkout>
+                <can_authorize>1</can_authorize>
+                <can_capture>1</can_capture>
+                <can_refund>1</can_refund>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
+                <can_void>1</can_void>
+                <can_cancel>1</can_cancel>
+                <can_accept_payment>1</can_accept_payment>
+                <order_status>pending</order_status>
+                <allowspecific>1</allowspecific>
+                <specificcountry>BR</specificcountry>
+                <country>BR</country>
+                <currency>BRL</currency>
+                <cnpj_attribute>vat_id</cnpj_attribute>
+                <paymentInfoKeys>reservation_id</paymentInfoKeys>
+                <privateInfoKeys>reservation_id</privateInfoKeys>
+            </tino_payment>
+        </payment>
+    </default>
+</config>

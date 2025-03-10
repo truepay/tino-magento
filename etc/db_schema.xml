@@ -1,0 +1,65 @@
+<?xml version="1.0" ?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="tino_webhooks" resource="default" engine="innodb" comment="Tino Payment Webhooks Table">
+        <column name="id" xsi:type="int" unsigned="true" nullable="false" identity="true" comment="ID registry"/>
+        <column name="type" xsi:type="varchar" length="50" nullable="false" comment="Type Webhook"/>
+        <column name="payment_reservation_id" xsi:type="varchar" length="50" nullable="false" comment="Reservation ID"/>
+        <column name="external_id" xsi:type="varchar" length="40" nullable="false" comment="External ID"/>
+        <column name="status" xsi:type="varchar" length="10" nullable="false" comment="Status"/>
+        <column name="created_at" xsi:type="timestamp" on_update="false" nullable="true" default="CURRENT_TIMESTAMP" comment="Created At Webhook"/>
+        <column name="updated_at" xsi:type="timestamp" on_update="true" nullable="true" default="CURRENT_TIMESTAMP" comment="Updated At Webhook"/>
+
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+
+        <index referenceId="TINO_PAYMENT_INDEX_TYPE" indexType="btree">
+            <column name="type"/>
+        </index>
+        <index referenceId="TINO_PAYMENT_INDEX_EXTERNAL_ID" indexType="btree">
+            <column name="external_id"/>
+        </index>
+        <index referenceId="TINO_PAYMENT_INDEX_RESERVATION_ID" indexType="btree">
+            <column name="payment_reservation_id"/>
+        </index>
+    </table>
+
+    <table name="tino_invoice" resource="default" engine="innodb" comment="Tino Payment Invoice Table">
+        <column name="id" xsi:type="int" unsigned="true" nullable="false" identity="true" comment="ID registry"/>
+        <column name="external_id_invoice" xsi:type="varchar" length="64" nullable="false" comment="External ID Invoice"/>
+        <column name="increment_id" xsi:type="varchar" length="40" nullable="false" comment="Increment ID Order"/>
+        <column name="amount" xsi:type="varchar" length="40" nullable="false" comment="Invoice Amount"/>
+        <column name="created_at" xsi:type="timestamp" on_update="false" nullable="true" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column name="updated_at" xsi:type="timestamp" on_update="true" nullable="true" default="CURRENT_TIMESTAMP" comment="Updated At"/>
+
+        <constraint xsi:type="unique" referenceId="TINO_INVOICE_EXTERNAL_ID_INVOICE_UNIQUE">
+            <column name="external_id_invoice"/>
+        </constraint>
+
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+    </table>
+
+    <table name="tino_invoice_item" resource="default" engine="innodb" comment="Tino Payment Invoice Item Table">
+        <column name="id" xsi:type="int" unsigned="true" nullable="false" identity="true" comment="ID registry"/>
+        <column name="item_id" xsi:type="int" unsigned="true" nullable="false" comment="Item Order Id"/>
+        <column name="qty" xsi:type="int" unsigned="true" nullable="false" comment="Quantity Invoiced"/>
+        <column name="parent_id" xsi:type="int" unsigned="true" nullable="false" comment="Parent ID Invoice"/>
+        <column name="created_at" xsi:type="timestamp" on_update="false" nullable="true" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column name="updated_at" xsi:type="timestamp" on_update="true" nullable="true" default="CURRENT_TIMESTAMP" comment="Updated At"/>
+
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+
+        <constraint xsi:type="foreign" referenceId="TINO_PAYMENT_INVOICE_ITEM_PARENT_ID_FK"
+                    table="tino_invoice_item"
+                    column="parent_id"
+                    referenceTable="tino_invoice"
+                    referenceColumn="id"
+                    onDelete="CASCADE"
+        />
+    </table>
+
+</schema>

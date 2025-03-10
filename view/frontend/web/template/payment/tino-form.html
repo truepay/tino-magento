@@ -1,0 +1,35 @@
+<div data-bind="attr: {class: 'payment-method payment-method-' + getCode()}, css: {'_active': isActive()}">
+    <div class="tino-payment-title payment-method-title field choice">
+        <input type="radio"
+               name="payment[method]"
+               class="radio"
+               data-bind="attr: {'id': getCode()}, value: getCode(), checked: isChecked, click: selectPaymentMethod, visible: isRadioButtonVisible()"/>
+
+        <label class="tino-payment-label label" data-bind="attr: {'for': getCode()}">
+            <img class="tino-payment-logo" data-bind="attr: { src: getLogoPayment(), alt: 'Tino Payment Logo'}, visible: getLogoPayment()" />
+            <span data-bind="text: getTitlePayment() ?? getTitle()"></span>
+        </label>
+    </div>
+    <div class="payment-method-content">
+        <!-- ko foreach: getRegion('messages') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+        <!--/ko-->
+
+        <div id="tino-payment-element">
+            <img data-bind="attr: { src: getBannerPayment(), alt: 'Tino Payment Banner' }, visible: getBannerPayment()" />
+        </div>
+
+        <div class="actions-toolbar">
+            <div class="primary">
+                <button class="action primary checkout"
+                        type="submit"
+                        data-bind="
+                        click: placeOrderTino,
+                        attr: {title: $t('Place Order with Tino')}">
+
+                    <span data-bind="i18n: 'Place Order with Tino'"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

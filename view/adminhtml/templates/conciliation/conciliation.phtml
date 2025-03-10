@@ -1,0 +1,33 @@
+<?php
+/** @var Conciliation $block */
+
+use Tino\Payment\Block\Adminhtml\Conciliation;
+
+?>
+
+<div class="messages"></div>
+
+<div class="tino admin__field">
+    <label for="start_date"><?= __('Start Date:') ?></label>
+    <input type="date" id="start_date" name="start_date" class="admin__control-text" />
+</div>
+<div class="tino admin__field">
+    <label for="end_date"><?= __('End Date:') ?></label>
+    <input type="date" id="end_date" name="end_date" class="admin__control-text" />
+</div>
+
+<div class="tino buttons-container">
+    <button id="financial" class="tino action-primary"><?= __('Download Financial Statement') ?></button>
+    <button id="accounting" class="tino action-primary"><?= __('Download Accounting Statement') ?></button>
+</div>
+
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Tino_Payment/js/conciliation": {
+                "ajaxUrl": "<?= $block->getAjaxUrl(); ?>"
+        }
+    }
+}
+</script>
+

@@ -1,0 +1,15 @@
+<?php
+
+use Tino\Payment\Block\Info;
+use Magento\Framework\Escaper;
+
+/** @var Info $block */
+/** @var Escaper $escaper */
+$tax = $block->getTax();
+?>
+<p class="title-payment"><?= $escaper->escapeHtml(__('Paid through Tino')) ?></p>
+<p>
+    <?php if ($tax): ?>
+        <span class="tax-value"><?= $escaper->escapeHtml(__('Tax Tino:'))?> <?= /* @NoEscape */ $tax ?></span>
+    <?php endif; ?>
+<p>

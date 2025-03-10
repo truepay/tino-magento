@@ -1,0 +1,35 @@
+<?php
+
+use Tino\Payment\Block\Info;
+use Magento\Framework\Escaper;
+
+/** @var Info $block */
+/** @var Escaper $escaper */
+
+$tax = $block->getTax();
+$reservationId = $block->getReservationId();
+$frequency = $block->getFrequency();
+?>
+
+<p class="title-payment"><?= $escaper->escapeHtml(__('Paid through Tino')) ?></p>
+
+<?php if (!empty($reservationId)): ?>
+    <p>
+        <strong><?= $escaper->escapeHtml(__('Reservation ID:')) ?></strong>
+        <span class="reservation-id"><?= $escaper->escapeHtml($reservationId) ?></span>
+    </p>
+<?php endif; ?>
+
+<?php if (!empty($frequency)): ?>
+    <p>
+        <strong><?= $escaper->escapeHtml(__('Frequency of transfer:')) ?></strong>
+        <span class="frequency"><?= $escaper->escapeHtml($frequency) ?></span>
+    </p>
+<?php endif; ?>
+
+<?php if (!empty($tax)): ?>
+    <p>
+        <strong><?= $escaper->escapeHtml(__('Tax Tino:')) ?></strong>
+        <span class="tax-value"><?= /* @NoEscape */ $tax ?></span>
+    </p>
+<?php endif; ?>

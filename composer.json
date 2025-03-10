@@ -1,0 +1,30 @@
+{
+    "name": "tino/payment",
+    "description": "Módulo de pagamento Tino para Magento 2",
+    "require": {
+        "php": "^8.2|^8.3",
+        "magento/module-sales": "*",
+        "magento/module-quote": "*",
+        "magento/module-payment": "*",
+        "magento/module-checkout": "*",
+        "magento/module-customer": "*"
+    },
+    "type": "magento2-module",
+    "version": "1.0.0",
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Tino\\Payment\\": ""
+        }
+    },
+    "extra": {
+        "map": [
+            [
+                "*",
+                "Tino/Payment"
+            ]
+        ]
+    }
+}
