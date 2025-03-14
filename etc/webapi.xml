@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+    <route url="/V1/tino/webhook" method="POST">
+        <service class="Tino\Payment\Api\WebhookReceiverInterface" method="receiveOrderData"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+    <route url="/V1/tino/nota-fiscal" method="POST">
+        <service class="Tino\Payment\Api\InvoiceReceiverInterface" method="receiveInvoice"/>
+        <resources>
+            <resource ref="Magento_Sales::sales"/>
+        </resources>
+    </route>
+</routes>

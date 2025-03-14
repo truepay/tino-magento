@@ -1,0 +1,27 @@
+.tino.admin__field {
+    margin-bottom: 15px;
+}
+.tino label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+.tino input[type="date"] {
+    padding: 5px;
+    width: 200px;
+}
+.tino .buttons-container {
+    display: flex;
+    gap: 10px;
+}
+.tino .buttons-container .action-primary {
+    padding: 10px 15px;
+    font-size: 14px;
+    border: none;
+    background-color: #ff5722;
+    color: #fff;
+    cursor: pointer;
+}
+.tino .buttons-container .action-primary:hover {
+    background-color: #e64a19;
+}

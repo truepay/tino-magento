@@ -1,0 +1,206 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <!-- Payment Method Tino Facade Configuration -->
+    <virtualType name="TinoPaymentFacade" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">Tino\Payment\Model\Ui\ConfigProvider::CODE</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">Tino\Payment\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">TinoPaymentValueHandlerPool</argument>
+            <argument name="validatorPool" xsi:type="object">TinoPaymentValidatorPool</argument>
+            <argument name="commandPool" xsi:type="object">TinoPaymentCommandPool</argument>
+        </arguments>
+    </virtualType>
+    <!-- End Payment Method Facade Configuration -->
+
+    <!-- Configuration reader -->
+    <type name="Tino\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">Tino\Payment\Model\Ui\ConfigProvider::CODE</argument>
+        </arguments>
+    </type>
+    <!-- END Configuration reader -->
+
+    <!-- Commands infrastructure -->
+    <virtualType name="TinoPaymentCommandPool" type="Magento\Payment\Gateway\Command\CommandPool">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="authorize" xsi:type="string">TinoPaymentAuthorizeCommand</item>
+                <item name="capture" xsi:type="string">TinoPaymentCaptureCommand</item>
+                <item name="cancel" xsi:type="string">TinoPaymentCancelCommand</item>
+                <item name="refund" xsi:type="string">TinoPaymentRefundCommand</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <!-- END Commands infrastructure -->
+
+    <!-- Commands  -->
+    <virtualType name="TinoPaymentAuthorizeCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">Tino\Payment\Gateway\Request\RetrieveDataBuilder</argument>
+            <argument name="transferFactory" xsi:type="object">Tino\Payment\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">Tino\Payment\Gateway\Http\Client\PaymentIntentRetrieve</argument>
+            <argument name="handler" xsi:type="object">TinoPaymentAuthorizeHandler</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="TinoPaymentCaptureCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="handler" xsi:type="object">Tino\Payment\Gateway\Response\CaptureHandler</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="TinoPaymentCancelCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="commandPool" xsi:type="object">TinoPaymentCommandPool</argument>
+            <argument name="requestBuilder" xsi:type="object">TinoCancelTransactionBuilder</argument>
+            <argument name="handler" xsi:type="object">TinoPaymentCancelHandler</argument>
+            <argument name="transferFactory" xsi:type="object">Tino\Payment\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">Tino\Payment\Gateway\Http\Client\PaymentCancel</argument>
+            <argument name="validator" xsi:type="object">Tino\Payment\Gateway\Validator\CancelResponseValidator</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="TinoPaymentRefundCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="commandPool" xsi:type="object">TinoPaymentCommandPool</argument>
+            <argument name="requestBuilder" xsi:type="object">TinoRefundTransactionBuilder</argument>
+            <argument name="handler" xsi:type="object">TinoPaymentRefundHandler</argument>
+            <argument name="transferFactory" xsi:type="object">Tino\Payment\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">Tino\Payment\Gateway\Http\Client\PaymentRefund</argument>
+            <argument name="validator" xsi:type="object">Tino\Payment\Gateway\Validator\RefundResponseValidator</argument>
+        </arguments>
+    </virtualType>
+    <!-- END Commands  -->
+
+    <!-- Request Cancel Transaction Builder -->
+    <virtualType name="TinoCancelTransactionBuilder" type="Tino\Payment\Gateway\Request\RequestBuilder">
+        <arguments>
+            <argument name="builder" xsi:type="object">TinoCancelBuilderComposite</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Request Cancel Transaction Builder Composite -->
+    <virtualType name="TinoCancelBuilderComposite" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="operation" xsi:type="string">Tino\Payment\Gateway\Request\CancelDataBuilder</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <!-- CANCEL END -->
+
+    <!-- Request Refund Transaction Builder -->
+    <virtualType name="TinoRefundTransactionBuilder" type="Tino\Payment\Gateway\Request\RequestBuilder">
+        <arguments>
+            <argument name="builder" xsi:type="object">TinoRefundBuilderComposite</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Request Refund Transaction Builder Composite -->
+    <virtualType name="TinoRefundBuilderComposite" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="operation" xsi:type="string">Tino\Payment\Gateway\Request\RefundDataBuilder</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <!-- REFUND END -->
+
+    <!-- Value handlers infrastructure -->
+    <virtualType name="TinoPaymentAuthorizeHandler" type="Magento\Payment\Gateway\Response\HandlerChain">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="reservation_id" xsi:type="string">Tino\Payment\Gateway\Response\PaymentHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="TinoPaymentCancelHandler" type="Magento\Payment\Gateway\Response\HandlerChain">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="reservation_id" xsi:type="string">Tino\Payment\Gateway\Response\CancelHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="TinoPaymentRefundHandler" type="Magento\Payment\Gateway\Response\HandlerChain">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="reservation_id" xsi:type="string">Tino\Payment\Gateway\Response\RefundHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="TinoPaymentValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">TinoPaymentConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="TinoPaymentConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">Tino\Payment\Gateway\Config\Config</argument>
+        </arguments>
+    </virtualType>
+    <!-- END Value handlers infrastructure -->
+
+    <!-- Validators infrastructure -->
+    <virtualType name="TinoPaymentValidatorPool" type="Magento\Payment\Gateway\Validator\ValidatorPool">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="country" xsi:type="string">Tino\Payment\Gateway\Validator\CountryValidator</item>
+                <item name="currency" xsi:type="string">Tino\Payment\Gateway\Validator\CurrencyValidator</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <!-- END Validators infrastructure -->
+
+    <!-- Logger -->
+    <virtualType name="TinoPaymentLogger" type="Magento\Payment\Model\Method\Logger">
+        <arguments>
+            <argument name="config" xsi:type="object">Tino\Payment\Gateway\Config\Config</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Tino\Payment\Model\PaymentInfoUpdater">
+        <arguments>
+            <argument name="logger" xsi:type="object">TinoPaymentLogger</argument>
+        </arguments>
+    </type>
+
+    <type name="Tino\Payment\Service\ApiAbstract">
+        <arguments>
+            <argument name="logger" xsi:type="object">TinoPaymentLogger</argument>
+        </arguments>
+    </type>
+
+    <type name="Tino\Payment\Model\Webhook\WebhookReceiver">
+        <arguments>
+            <argument name="loggerPayment" xsi:type="object">TinoPaymentLogger</argument>
+        </arguments>
+    </type>
+
+    <!-- END Logger -->
+
+    <type name="Tino\Payment\Model\Ui\ConfigProvider">
+        <arguments>
+            <argument name="checkoutSession" xsi:type="object">Magento\Checkout\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+
+    <preference for="Tino\Payment\Api\ApiInterface" type="Tino\Payment\Service\Api"/>
+    <preference for="Tino\Payment\Api\WebhookRepositoryInterface" type="Tino\Payment\Model\WebhookRepository" />
+    <preference for="Tino\Payment\Api\WebhookReceiverInterface" type="Tino\Payment\Model\Webhook\WebhookReceiver"/>
+    <preference for="Tino\Payment\Api\InvoiceReceiverInterface" type="Tino\Payment\Model\Invoice\InvoiceReceiver"/>
+    <preference for="Tino\Payment\Api\Data\InvoiceItemApiInterface" type="Tino\Payment\Model\Data\InvoiceItem" />
+    <preference for="Tino\Payment\Api\Data\InvoiceNfeInterface" type="Tino\Payment\Model\Data\InvoiceNfe" />
+    <preference for="Tino\Payment\Api\Data\WebhookApiInterface" type="Tino\Payment\Model\Data\WebhookApi" />
+    <preference for="Tino\Payment\Api\Data\InvoiceInterface" type="Tino\Payment\Model\Invoice" />
+    <preference for="Tino\Payment\Api\Data\InvoiceItemInterface" type="Tino\Payment\Model\InvoiceItem" />
+    <preference for="Tino\Payment\Api\InvoiceItemRepositoryInterface" type="Tino\Payment\Model\InvoiceItemRepository" />
+    <preference for="Tino\Payment\Api\InvoiceRepositoryInterface" type="Tino\Payment\Model\InvoiceRepository" />
+    <preference for="Tino\Payment\Api\PaymentContentInterface" type="Tino\Payment\Model\Payment\PaymentContent"/>
+</config>

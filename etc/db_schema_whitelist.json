@@ -1,0 +1,49 @@
+{
+    "tino_webhooks": {
+        "column": {
+            "id": true,
+            "type": true,
+            "payment_reservation_id": true,
+            "external_id": true,
+            "status": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "index": {
+            "TINO_WEBHOOKS_TYPE": true,
+            "TINO_WEBHOOKS_EXTERNAL_ID": true,
+            "TINO_WEBHOOKS_PAYMENT_RESERVATION_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "tino_invoice": {
+        "column": {
+            "id": true,
+            "external_id_invoice": true,
+            "increment_id": true,
+            "amount": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "TINO_INVOICE_EXTERNAL_ID_INVOICE": true
+        }
+    },
+    "tino_invoice_item": {
+        "column": {
+            "id": true,
+            "item_id": true,
+            "qty": true,
+            "parent_id": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "TINO_INVOICE_ITEM_PARENT_ID_TINO_INVOICE_ID": true
+        }
+    }
+}

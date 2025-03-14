@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Tino_Payment::main"
+             title="Tino"
+             module="Tino_Payment"
+             sortOrder="99"
+             resource="Tino_Payment::main"
+             translate="title"/>
+
+        <add id="Tino::conciliation"
+             title="Financial Reconciliation"
+             module="Tino_Payment"
+             parent="Tino_Payment::main"
+             action="tino/conciliation/index"
+             translate="title"
+             sortOrder="10"
+             resource="Tino_Payment::conciliation"/>
+    </menu>
+</config>

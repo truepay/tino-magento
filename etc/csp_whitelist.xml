@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<csp_whitelist xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Csp:etc/csp_whitelist.xsd">
+    <policies>
+        <policy id="script-src">
+            <values>
+                <value id="script_tino" type="host">https://checkoutsdk.tino.com.br</value>
+                <value id="script_tino_stg_checkout_app" type="host">https://stg.checkoutapp.tino.com.br</value>
+                <value id="script_tino_stg_app" type="host">https://stg.app.tino.com.br</value>
+            </values>
+        </policy>
+        <policy id="connect-src">
+            <values>
+                <value id="connect_tino" type="host">https://checkoutsdk.tino.com.br</value>
+                <value id="connect_snowplow" type="host">https://snowplow.truepay.dev</value>
+                <value id="connect_tino_stg_checkout_app" type="host">https://stg.checkoutapp.tino.com.br</value>
+                <value id="connect_tino_stg_app" type="host">https://stg.app.tino.com.br</value>
+            </values>
+        </policy>
+        <policy id="img-src">
+            <values>
+                <value id="img_tino" type="host">https://checkoutsdk.tino.com.br</value>
+                <value id="img_tino_stg_checkout_app" type="host">https://stg.checkoutapp.tino.com.br</value>
+                <value id="img_tino_stg_app" type="host">https://stg.app.tino.com.br</value>
+                <value id="img_storage_google_api" type="host">https://storage.googleapis.com</value>
+            </values>
+        </policy>
+        <policy id="font-src">
+            <values>
+                <value id="font_tino" type="host">https://checkoutsdk.tino.com.br</value>
+                <value id="font_tino_stg_checkout_app" type="host">https://stg.checkoutapp.tino.com.br</value>
+                <value id="font_tino_stg_app" type="host">https://stg.app.tino.com.br</value>
+            </values>
+        </policy>
+        <policy id="style-src">
+            <values>
+                <value id="style_tino" type="host">https://checkoutsdk.tino.com.br</value>
+                <value id="style_tino_stg_checkout_app" type="host">https://stg.checkoutapp.tino.com.br</value>
+                <value id="style_tino_stg_app" type="host">https://stg.app.tino.com.br</value>
+            </values>
+        </policy>
+        <policy id="frame-src">
+            <values>
+                <value id="frame_tino" type="host">https://checkoutsdk.tino.com.br</value>
+                <value id="frame_tino_stg_checkout_app" type="host">https://stg.checkoutapp.tino.com.br</value>
+                <value id="frame_tino_stg_app" type="host">https://stg.app.tino.com.br</value>
+            </values>
+        </policy>
+        <policy id="media-src">
+            <values>
+                <value id="media_tino" type="host">https://checkoutsdk.tino.com.br</value>
+                <value id="media_tino_stg_checkout_app" type="host">https://stg.checkoutapp.tino.com.br</value>
+                <value id="media_tino_stg_app" type="host">https://stg.app.tino.com.br</value>
+            </values>
+        </policy>
+        <policy id="form-action">
+            <values>
+                <value id="form_tino" type="host">https://checkoutsdk.tino.com.br</value>
+                <value id="form_tino_stg_checkout_app" type="host">https://stg.checkoutapp.tino.com.br</value>
+                <value id="form_tino_stg_app" type="host">https://stg.app.tino.com.br</value>
+            </values>
+        </policy>
+    </policies>
+</csp_whitelist>
