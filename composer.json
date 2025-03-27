@@ -1,5 +1,5 @@
 {
-    "name": "tino/payment",
+    "name": "tinobr/payment",
     "description": "Módulo de pagamento Tino para Magento 2",
     "require": {
         "php": "^8.2|^8.3",
