@@ -64,4 +64,12 @@ interface ApiInterface
      * @return array
      */
     public function getPaymentContent($body): array;
+
+    /**
+     * Send order info to api tino
+     * @param $body
+     * @param $reservationId
+     * @return array
+     */
+    public function sendOrder($body, $reservationId): array;
 }
