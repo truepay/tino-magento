@@ -71,4 +71,13 @@ class Api extends ApiAbstract implements ApiInterface
         $endpoint = self::ENDPOINT_BANNER;
         return $this->requestBanner($endpoint, $body);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function sendOrder($body, $reservationId): array
+    {
+        $endpoint = self::ENDPOINT_LIMIT_RESERVATION . $reservationId;
+        return $this->request($endpoint, "PATCH", [], $body);
+    }
 }

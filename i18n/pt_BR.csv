@@ -44,3 +44,4 @@
 "TAXVAT (Customer)", "TAXVAT (Cliente)"
 "CNPJ attribute that will be used for transactions with Tino.", "Atributo do CNPJ do cliente que será utilizado nas transações com o Tino."
 "CNPJ used to consult the name and banner that will be displayed at checkout.", "CNPJ usado para consultar o nome e o banner que serão exibidos no checkout."
+"Order not send to Tino Api. Error code: %1", "Pedido não enviado para o Tino. Código de erro: %1"
