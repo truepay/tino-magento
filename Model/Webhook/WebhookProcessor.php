@@ -24,6 +24,7 @@ use Tino\Payment\Model\ResourceModel\Webhook\Collection as WebhookCollection;
 use Magento\Sales\Api\TransactionRepositoryInterface;
 use Magento\Sales\Model\Order\Payment\Transaction\BuilderInterface;
 use Magento\Sales\Model\ResourceModel\Order\Collection;
+use Magento\Framework\Serialize\Serializer\Json as JsonSerializer;
 
 class WebhookProcessor
 {
@@ -40,6 +41,7 @@ class WebhookProcessor
     private BuilderInterface $transactionBuilder;
     private Collection $orderCollection;
     private Config $config;
+    private JsonSerializer $jsonSerializer;
 
     public function __construct(
         WebhookCollection $webhookCollection,
@@ -51,7 +53,8 @@ class WebhookProcessor
         TransactionRepositoryInterface $transactionRepository,
         BuilderInterface $transactionBuilder,
         OrderStatusHistoryRepositoryInterface $orderStatusHistoryRepository,
-        Config $config
+        Config $config,
+        JsonSerializer $jsonSerializer
     ) {
         $this->webhookCollection = $webhookCollection;
         $this->webhookResource = $webhookResource;
@@ -63,6 +66,7 @@ class WebhookProcessor
         $this->transactionBuilder = $transactionBuilder;
         $this->orderStatusHistoryRepository = $orderStatusHistoryRepository;
         $this->config = $config;
+        $this->jsonSerializer = $jsonSerializer;
     }
 
     /**
@@ -130,6 +134,48 @@ class WebhookProcessor
         }
 
         $this->completeWebhook($webhook);
+        $this->sendOrderInApi($order, $webhook);
+    }
+
+    /**
+     * @param $order
+     * @param $webhook
+     * @return void
+     */
+    private function sendOrderInApi($order, $webhook): void
+    {
+        $reservationId = $webhook->getPaymentReservationId();
+        $data = [
+            "additional_data" => [
+                "external_order" => [
+                    "order_id" => $order->getId(),
+                    "increment_id" => $order->getIncrementId()
+                ]
+            ]
+        ];
+
+        $this->logger->info("Tino Payment - Order send body {$reservationId} " . $this->jsonSerializer->serialize($data));
+        try {
+            $response = $this->api->sendOrder($data, $reservationId);
+
+            $this->logger->info("Tino Payment - Order Response body {$reservationId} " . $this->jsonSerializer->serialize($response));
+
+            if ($response['status_code'] != 200) {
+                $errorCode = '';
+
+                if (isset($response['response']['code'])) {
+                    $errorCode = $response['response']['code'];
+                }
+
+                $comment = __('Order not send to Tino Api. Error code: %1', $errorCode);
+                $historyItem = $order->addCommentToStatusHistory($comment, false, true);
+                $historyItem->setIsCustomerNotified(0);
+
+                $this->orderStatusHistoryRepository->save($historyItem);
+            }
+        } catch (\Exception $e) {
+            $this->logger->error($e->getMessage());
+        }
     }
 
     /**
